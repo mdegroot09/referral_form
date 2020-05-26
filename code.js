@@ -36,6 +36,10 @@ var getContactInfo = async (contactid) => {
   updateContactRelatedField('mobilephone', data.mobilephone)
   updateContactRelatedField('emailaddress1', data.emailaddress1)
 
+  // update Topic with full name
+  var fullname = data.firstname + ' ' + data.lastname
+  updateContactRelatedField('subject', fullname)
+
   return getMarket(data)
 }
 
