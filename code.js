@@ -18,13 +18,7 @@ var getContactInfo = async (contactid) => {
 
   var url = 'https://homie-sb.crm.dynamics.com/api/data/v9.0/contacts(' + contactid + ')?$select=firstname,lastname,mobilephone,emailaddress1,_originatingleadid_value'
   var otherParams = {
-    headers: {
-      "OData-MaxVersion": "4.0",
-      "OData-Version": "4.0",
-      "Content-Type": "application/json; charset=utf-8",
-      "Accept": "application/json",
-      "Prefer": "odata.maxpagesize=10, odata.include-annotations=OData.Community.Display.V1.FormattedValue"
-    },
+    headers: getHeaders(),
     method: "GET"
   }
   var res = await fetch(url, otherParams)
@@ -53,18 +47,22 @@ var getMarket = async (data) => {
   // get market from contact's originating lead
   var url = 'https://homie-sb.crm.dynamics.com/api/data/v9.0/leads(' + leadid + ')?$select=homie_market'
   var otherParams = {
-    headers: {
-      "OData-MaxVersion": "4.0",
-      "OData-Version": "4.0",
-      "Content-Type": "application/json; charset=utf-8",
-      "Accept": "application/json",
-      "Prefer": "odata.maxpagesize=10, odata.include-annotations=OData.Community.Display.V1.FormattedValue"
-    },
+    headers: getHeaders(),
     method: "GET"
   }
   var res = await fetch(url, otherParams)
   var data = await res.json()
   updateContactRelatedField('homie_market', data.homie_market)
+}
+
+var getHeaders = () => {
+  return {
+    "OData-MaxVersion": "4.0",
+    "OData-Version": "4.0",
+    "Content-Type": "application/json; charset=utf-8",
+    "Accept": "application/json",
+    "Prefer": "odata.maxpagesize=10, odata.include-annotations=OData.Community.Display.V1.FormattedValue"
+  }
 }
 
 var updateContactRelatedField = (field, val) => {
