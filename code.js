@@ -77,3 +77,22 @@ var clearReferralContactFields = () => {
   Xrm.Page.data.entity.attributes.get("emailaddress1").setValue('')
   Xrm.Page.data.entity.attributes.get("homie_market").setValue('')
 }
+
+var hideAddress2Composites = () => {
+  setTimeout(() => {
+    // var e = document.querySelector('div[data-id="address2_composite_compositionLinkControl_address2_line1"]')
+    var e = document.querySelector('div[data-id="address2_line1"]')
+    // var element = document.getElementById('myDivID');
+    // var dataID = element.getAttribute('data-id');
+    // var e = div[data-id="address2_composite_compositionLinkControl_address2_line1"]
+    // var e = $('[data-id="address2_composite_compositionLinkControl_address2_line1"]')
+    if (e){
+      console.log('element found')
+      console.log(e)
+    }
+    else {
+      console.log('element not found')
+      console.log(e)
+    }
+  }, 1000);
+}
