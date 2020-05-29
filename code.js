@@ -80,19 +80,11 @@ var clearReferralContactFields = () => {
 
 var hideAddress2Composites = () => {
   setTimeout(() => {
-    // var e = document.querySelector('div[data-id="address2_composite_compositionLinkControl_address2_line1"]')
-    var e = document.querySelector('div[data-id="address2_line1"]')
-    // var element = document.getElementById('myDivID');
-    // var dataID = element.getAttribute('data-id');
-    // var e = div[data-id="address2_composite_compositionLinkControl_address2_line1"]
-    // var e = $('[data-id="address2_composite_compositionLinkControl_address2_line1"]')
-    if (e){
-      console.log('element found')
-      console.log(e)
-    }
-    else {
-      console.log('element not found')
-      console.log(e)
-    }
-  }, 1000);
+    Xrm.Page.ui.controls.get("address2_composite_compositionLinkControl_address2_line1").setVisible(false)
+    Xrm.Page.ui.controls.get("address2_composite_compositionLinkControl_address2_line2").setVisible(false)
+    Xrm.Page.ui.controls.get("address2_composite_compositionLinkControl_address2_line3").setVisible(false)
+    Xrm.Page.ui.controls.get("address2_composite_compositionLinkControl_address2_city").setVisible(false)
+    Xrm.Page.ui.controls.get("address2_composite_compositionLinkControl_address2_stateorprovince").setVisible(false)
+    Xrm.Page.ui.controls.get("address2_composite_compositionLinkControl_address2_postalcode").setVisible(false)
+  }, 100);
 }
