@@ -1,4 +1,5 @@
 var updateReferralFieldsWithContactInfo = () => {
+  hideAddress2Composites()
   var contact = Xrm.Page.data.entity.attributes.get("homie_existingcontact").getValue()
 
   if (contact){
