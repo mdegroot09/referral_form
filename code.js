@@ -1,12 +1,25 @@
+var updateFormUsingReferralType = () => {
+  var referralType = Xrm.Page.data.entity.attributes.get('homie_verticalselection').getValue()
+
+  // show tour location type only for buyer referrals
+  if (referralType == 'Buyer'){
+    Xrm.Page.ui.controls.get('homie_tourlocationtype').setVisible(true)
+    console.log(Xrm.Page.data.entity.attributes.get('homie_tourlocationtype').getValue())
+  } else {
+    Xrm.Page.ui.controls.get('homie_tourlocationtype').setVisible(false)
+    console.log(Xrm.Page.data.entity.attributes.get('homie_tourlocationtype').getValue())
+  }
+
+  hideAddress2Composites()
+}
+
 var updateReferralFieldsWithContactInfo = () => {
   hideAddress2Composites()
   var contact = Xrm.Page.data.entity.attributes.get("homie_existingcontact").getValue()
 
   if (contact){
     return getContactInfo(contact[0].id)
-  }
-
-  else {
+  } else {
     return clearReferralContactFields()
   }
 }
@@ -96,17 +109,15 @@ var updateSubject = () => {
   var firstname = Xrm.Page.data.entity.attributes.get("firstname").getValue()
   var lastname = Xrm.Page.data.entity.attributes.get("lastname").getValue()
 
+  // only use fields with a value, otherwise use empty string
   var fullname
   if (firstname && lastname){
     fullname = firstname + ' ' + lastname
-  }
-  else if (firstname){
+  } else if (firstname){
     fullname = firstname
-  }
-  else if (lastname){
+  } else if (lastname){
     fullname = lastname
-  }
-  else {
+  } else {
     fullname = ''
   }
 
