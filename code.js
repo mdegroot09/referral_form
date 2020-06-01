@@ -95,6 +95,21 @@ var updateSubject = () => {
   // update subject field aka "Topic"
   var firstname = Xrm.Page.data.entity.attributes.get("firstname").getValue()
   var lastname = Xrm.Page.data.entity.attributes.get("lastname").getValue()
-  var fullname = firstname + ' ' + lastname
+
+  var fullname
+  if (firstname && lastname){
+    fullname = firstname + ' ' + lastname
+  }
+  else if (firstname){
+    fullname = firstname
+  }
+  else if (lastname){
+    fullname = lastname
+  }
+  else {
+    fullname = ''
+  }
+
+  fullname = fullname.trim()
   updateContactRelatedField('subject', fullname)
 }
