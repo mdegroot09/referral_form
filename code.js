@@ -72,11 +72,12 @@ var updateContactRelatedField = (field, val) => {
 
 var clearReferralContactFields = () => {
   // clear all fields
-  Xrm.Page.data.entity.attributes.get("firstname").setValue('')
-  Xrm.Page.data.entity.attributes.get("lastname").setValue('')
-  Xrm.Page.data.entity.attributes.get("mobilephone").setValue('')
-  Xrm.Page.data.entity.attributes.get("emailaddress1").setValue('')
-  Xrm.Page.data.entity.attributes.get("homie_market").setValue('')
+  updateContactRelatedField('firstname','')
+  updateContactRelatedField('lastname','')
+  updateContactRelatedField('mobilephone','')
+  updateContactRelatedField('emailaddress1','')
+  updateContactRelatedField('homie_market','')
+  updateContactRelatedField('subject','')
 }
 
 var hideAddress2Composites = () => {
@@ -88,4 +89,12 @@ var hideAddress2Composites = () => {
     Xrm.Page.ui.controls.get("address2_composite_compositionLinkControl_address2_stateorprovince").setVisible(false)
     Xrm.Page.ui.controls.get("address2_composite_compositionLinkControl_address2_postalcode").setVisible(false)
   }, 100);
+}
+
+var updateSubject = () => {
+  // update subject field aka "Topic"
+  var firstname = Xrm.Page.data.entity.attributes.get("firstname").getValue()
+  var lastname = Xrm.Page.data.entity.attributes.get("lastname").getValue()
+  var fullname = firstname + ' ' + lastname
+  updateContactRelatedField('subject', fullname)
 }
