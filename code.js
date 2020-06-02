@@ -1,13 +1,14 @@
 var updateFormUsingReferralType = () => {
-  var referralType = Xrm.Page.data.entity.attributes.get('homie_verticalselection').getValue()
+  var referralType = Xrm.Page.data.entity.attributes.get('homie_verticalselection').getSelectedOption().text
 
   // show tour location type only for buyer referrals
   if (referralType == 'Buyer'){
+    // show tour location type
     Xrm.Page.ui.controls.get('homie_tourlocationtype').setVisible(true)
-    console.log(Xrm.Page.data.entity.attributes.get('homie_tourlocationtype').getValue())
   } else {
+    // hide and reset tour location type
     Xrm.Page.ui.controls.get('homie_tourlocationtype').setVisible(false)
-    console.log(Xrm.Page.data.entity.attributes.get('homie_tourlocationtype').getValue())
+    Xrm.Page.data.entity.attributes.get('homie_tourlocationtype').setValue(false)
   }
 
   hideAddress2Composites()
