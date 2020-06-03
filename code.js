@@ -5,10 +5,12 @@ var updateFormUsingReferralType = () => {
   if (referralType == 'Buyer'){
     // show tour location type
     Xrm.Page.ui.controls.get('homie_tourlocationtype').setVisible(true)
+    updateLocationFields()
   } else {
     // hide and reset tour location type
     Xrm.Page.ui.controls.get('homie_tourlocationtype').setVisible(false)
     Xrm.Page.data.entity.attributes.get('homie_tourlocationtype').setValue(false)
+    updateLocationFields()
   }
 
   hideAddress2Composites()
@@ -128,6 +130,7 @@ var updateSubject = () => {
 
 var updateLocationFields = () => {
   var locationType = Xrm.Page.data.entity.attributes.get('homie_tourlocationtype').getSelectedOption().text
+  console.log(locationType)
 
   if (locationType == 'General area') {
     Xrm.Page.ui.controls.get('address2_line1').setVisible(false)
