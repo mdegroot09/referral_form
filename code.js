@@ -125,3 +125,17 @@ var updateSubject = () => {
   fullname = fullname.trim()
   updateContactRelatedField('subject', fullname)
 }
+
+var updateLocationFields = () => {
+  var locationType = Xrm.Page.data.entity.attributes.get('homie_tourlocationtype').getSelectedOption().text
+
+  if (locationType == 'General area') {
+    Xrm.Page.ui.controls.get('address2_line1').setVisible(false)
+    Xrm.Page.ui.controls.get('address2_line2').setVisible(false)
+    Xrm.Page.ui.controls.get('address2_line3').setVisible(false)
+  } else {
+    Xrm.Page.ui.controls.get('address2_line1').setVisible(true)
+    Xrm.Page.ui.controls.get('address2_line2').setVisible(true)
+    Xrm.Page.ui.controls.get('address2_line3').setVisible(true)
+  }
+}
