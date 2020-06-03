@@ -130,9 +130,9 @@ var updateSubject = () => {
 
 var updateLocationFields = () => {
   var locationType = Xrm.Page.data.entity.attributes.get('homie_tourlocationtype').getValue()
-  console.log('locationType: ' + locationType)
 
-  if (locationType === 'true') {
+  // hide streets 1-3 fields if "General area"
+  if (locationType === true) {
     Xrm.Page.ui.controls.get('address2_line1').setVisible(false)
     Xrm.Page.ui.controls.get('address2_line2').setVisible(false)
     Xrm.Page.ui.controls.get('address2_line3').setVisible(false)
@@ -141,4 +141,6 @@ var updateLocationFields = () => {
     Xrm.Page.ui.controls.get('address2_line2').setVisible(true)
     Xrm.Page.ui.controls.get('address2_line3').setVisible(true)
   }
+
+  hideAddress2Composites()
 }
