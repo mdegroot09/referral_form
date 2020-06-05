@@ -1,19 +1,18 @@
 var updateFormUsingReferralType = () => {
   var referralType = Xrm.Page.data.entity.attributes.get('homie_verticalselection').getSelectedOption().text
+  console.log('referralType: ' + referralType)
 
   // show tour location type only for buyer referrals
   if (referralType == 'Buyer'){
     // show tour location type
     Xrm.Page.ui.controls.get('homie_tourlocationtype').setVisible(true)
-    updateLocationFields()
+    return updateLocationFields()
   } else {
     // hide and reset tour location type
     Xrm.Page.ui.controls.get('homie_tourlocationtype').setVisible(false)
     Xrm.Page.data.entity.attributes.get('homie_tourlocationtype').setValue(false)
-    updateLocationFields()
+    return updateLocationFields()
   }
-
-  hideAddress2Composites()
 }
 
 var updateReferralFieldsWithContactInfo = () => {
@@ -69,7 +68,7 @@ var getMarket = async (data) => {
   }
   var res = await fetch(url, otherParams)
   var data = await res.json()
-  updateContactRelatedField('homie_market', data.homie_market)
+  return updateContactRelatedField('homie_market', data.homie_market)
 }
 
 var getHeaders = () => {
@@ -106,7 +105,9 @@ var hideAddress2Composites = () => {
       Xrm.Page.ui.controls.get("address2_composite_compositionLinkControl_address2_stateorprovince").setVisible(false)
       Xrm.Page.ui.controls.get("address2_composite_compositionLinkControl_address2_postalcode").setVisible(false)
     }
-    catch(e){}
+    catch(e){
+      console.log('address 2 composites not found')
+    }
   }, 100);
 }
 
@@ -128,7 +129,7 @@ var updateSubject = () => {
   }
 
   fullname = fullname.trim()
-  updateContactRelatedField('subject', fullname)
+  return updateContactRelatedField('subject', fullname)
 }
 
 var updateLocationFields = () => {
@@ -145,5 +146,5 @@ var updateLocationFields = () => {
     Xrm.Page.ui.controls.get('address2_line3').setVisible(true)
   }
 
-  hideAddress2Composites()
+  return hideAddress2Composites()
 }
