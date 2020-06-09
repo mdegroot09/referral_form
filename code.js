@@ -181,6 +181,7 @@ var showForm = () => {
   Xrm.Page.ui.controls.get('homie_isthisahomieclient').setVisible(true)
   Xrm.Page.ui.controls.get('leadsourcecode').setVisible(true)
   
+  showLockNameFields()
   showHideLocationFields()
   showHideLocationType()
 
@@ -191,6 +192,7 @@ var hideForm = () => {
   Xrm.Page.ui.controls.get('homie_isthisahomieclient').setVisible(false)
   Xrm.Page.ui.controls.get('leadsourcecode').setVisible(false)
   
+  showLockNameFields()
   showHideLocationFields()
   showHideLocationType()
 
