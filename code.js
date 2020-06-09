@@ -1,22 +1,19 @@
 var updateFormUsingReferralType = () => {
-  var referralType = Xrm.Page.data.entity.attributes.get('homie_verticalselection').getSelectedOption().text
-  console.log('referralType: ' + referralType)
+  var referralType = Xrm.Page.data.entity.attributes.get('homie_verticalselection').getSelectedOption()
 
-  // show tour location type only for buyer referrals
-  if (referralType == 'Buyer'){
-    // show tour location type
-    Xrm.Page.ui.controls.get('homie_tourlocationtype').setVisible(true)
-    return updateLocationFields()
+  // show form only after referral type selection
+  if (referralType){
+    return showForm()
   } else {
-    // hide and reset tour location type
-    Xrm.Page.ui.controls.get('homie_tourlocationtype').setVisible(false)
-    Xrm.Page.data.entity.attributes.get('homie_tourlocationtype').setValue(false)
-    return updateLocationFields()
+    // // hide and reset tour location type
+    // Xrm.Page.ui.controls.get('homie_tourlocationtype').setVisible(false)
+    // Xrm.Page.data.entity.attributes.get('homie_tourlocationtype').setValue(false)
+    return hideForm()
   }
 }
 
 var updateReferralFieldsWithContactInfo = () => {
-  hideAddress2Composites()
+  // hideAddress2Composites()
   var contact = Xrm.Page.data.entity.attributes.get("homie_existingcontact").getValue()
 
   if (contact){
@@ -132,19 +129,57 @@ var updateSubject = () => {
   return updateContactRelatedField('subject', fullname)
 }
 
-var updateLocationFields = () => {
+var showHideLocationFields = () => {
   var locationType = Xrm.Page.data.entity.attributes.get('homie_tourlocationtype').getValue()
-
-  // hide streets 1-3 fields if "General area"
-  if (locationType === true) {
+  var referralType = Xrm.Page.data.entity.attributes.get('homie_verticalselection').getSelectedOption()
+  
+  if (!referralType){
     Xrm.Page.ui.controls.get('address2_line1').setVisible(false)
     Xrm.Page.ui.controls.get('address2_line2').setVisible(false)
     Xrm.Page.ui.controls.get('address2_line3').setVisible(false)
-  } else {
+    Xrm.Page.ui.controls.get('address2_city').setVisible(false)
+    Xrm.Page.ui.controls.get('homie_countieslist').setVisible(false)
+    Xrm.Page.ui.controls.get('address2_postalcode').setVisible(false)
+  }  
+
+  // hide streets 1-3 fields if "General area" or if referralType 
+  else if (locationType === true) {
+    Xrm.Page.ui.controls.get('address2_line1').setVisible(false)
+    Xrm.Page.ui.controls.get('address2_line2').setVisible(false)
+    Xrm.Page.ui.controls.get('address2_line3').setVisible(false)
+    Xrm.Page.ui.controls.get('address2_city').setVisible(true)
+    Xrm.Page.ui.controls.get('homie_countieslist').setVisible(true)
+    Xrm.Page.ui.controls.get('address2_postalcode').setVisible(true)
+  } 
+
+  else {
     Xrm.Page.ui.controls.get('address2_line1').setVisible(true)
     Xrm.Page.ui.controls.get('address2_line2').setVisible(true)
     Xrm.Page.ui.controls.get('address2_line3').setVisible(true)
+    Xrm.Page.ui.controls.get('address2_city').setVisible(true)
+    Xrm.Page.ui.controls.get('homie_countieslist').setVisible(true)
+    Xrm.Page.ui.controls.get('address2_postalcode').setVisible(true)
   }
 
-  return hideAddress2Composites()
+  // return hideAddress2Composites()
+}
+
+var showForm = () => {
+  Xrm.Page.ui.controls.get('homie_isthisahomieclient').setVisible(true)
+  Xrm.Page.ui.controls.get('leadsourcecode').setVisible(true)
+  
+  showHideLocationFields()
+  
+}
+
+var hideForm = () => {
+  Xrm.Page.ui.controls.get('homie_isthisahomieclient').setVisible(false)
+  Xrm.Page.ui.controls.get('leadsourcecode').setVisible(false)
+  
+  showHideLocationFields()
+}
+
+var showAddressFields = () => {
+  // show tour location type
+  Xrm.Page.ui.controls.get('homie_tourlocationtype').setVisible(true)
 }
