@@ -130,8 +130,8 @@ var updateSubject = () => {
 }
 
 var showHideLocationFields = () => {
-  var locationType = Xrm.Page.data.entity.attributes.get('homie_tourlocationtype').getValue()
   var referralType = Xrm.Page.data.entity.attributes.get('homie_verticalselection').getSelectedOption()
+  var locationType = Xrm.Page.data.entity.attributes.get('homie_tourlocationtype').getValue()
   
   if (!referralType){
     Xrm.Page.ui.controls.get('address2_line1').setVisible(false)
@@ -195,4 +195,34 @@ var hideForm = () => {
   showHideLocationType()
 
   Xrm.Page.ui.controls.get('description').setVisible(false)
+}
+
+var showLockNameFields = () => {
+  var referralType = Xrm.Page.data.entity.attributes.get('homie_verticalselection').getSelectedOption()
+  var isHomieClient = Xrm.Page.data.entity.attributes.get('homie_isthisahomieclient').getValue()
+  
+  if (referralType){
+    if (isHomieClient === true){
+      Xrm.Page.ui.controls.get('homie_existingcontact').setVisible(true)
+    }
+    else {
+      Xrm.Page.ui.controls.get('homie_existingcontact').setVisible(false)
+    }
+    Xrm.Page.ui.controls.get('firstname').setVisible(true)
+    Xrm.Page.ui.controls.get('lastname').setVisible(true)
+    Xrm.Page.ui.controls.get('mobilephone').setVisible(true)
+    Xrm.Page.ui.controls.get('emailaddress1').setVisible(true)
+    Xrm.Page.ui.controls.get('homie_market').setVisible(true)
+    Xrm.Page.ui.controls.get('subject').setVisible(true)
+  }
+
+  else {
+    Xrm.Page.ui.controls.get('homie_existingcontact').setVisible(false)
+    Xrm.Page.ui.controls.get('firstname').setVisible(false)
+    Xrm.Page.ui.controls.get('lastname').setVisible(false)
+    Xrm.Page.ui.controls.get('mobilephone').setVisible(false)
+    Xrm.Page.ui.controls.get('emailaddress1').setVisible(false)
+    Xrm.Page.ui.controls.get('homie_market').setVisible(false)
+    Xrm.Page.ui.controls.get('subject').setVisible(false)
+  }
 }
