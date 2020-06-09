@@ -164,12 +164,27 @@ var showHideLocationFields = () => {
   // return hideAddress2Composites()
 }
 
+var showHideLocationType = () => {
+  var referralType = Xrm.Page.data.entity.attributes.get('homie_verticalselection').getSelectedOption()
+  
+  if (referralType && referralType.text == 'Buyer'){
+    Xrm.Page.ui.controls.get('homie_tourlocationtype').setVisible(true)
+  }
+  else {
+    Xrm.Page.ui.controls.get('homie_tourlocationtype').setVisible(false)
+    Xrm.Page.data.entity.attributes.get('homie_tourlocationtype').setValue(false)
+  }
+
+}
+
 var showForm = () => {
   Xrm.Page.ui.controls.get('homie_isthisahomieclient').setVisible(true)
   Xrm.Page.ui.controls.get('leadsourcecode').setVisible(true)
   
   showHideLocationFields()
-  
+  showHideLocationType()
+
+  Xrm.Page.ui.controls.get('description').setVisible(true)
 }
 
 var hideForm = () => {
@@ -177,9 +192,7 @@ var hideForm = () => {
   Xrm.Page.ui.controls.get('leadsourcecode').setVisible(false)
   
   showHideLocationFields()
-}
+  showHideLocationType()
 
-var showAddressFields = () => {
-  // show tour location type
-  Xrm.Page.ui.controls.get('homie_tourlocationtype').setVisible(true)
+  Xrm.Page.ui.controls.get('description').setVisible(false)
 }
