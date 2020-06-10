@@ -1,20 +1,17 @@
-var updateFormUsingReferralType = () => {
-  var referralType = Xrm.Page.data.entity.attributes.get('homie_verticalselection').getSelectedOption()
+let updateFormUsingReferralType = () => {
+  let referralType = Xrm.Page.data.entity.attributes.get('homie_verticalselection').getSelectedOption()
 
   // show form only after referral type selection
   if (referralType){
     return showForm()
   } else {
-    // // hide and reset tour location type
-    // Xrm.Page.ui.controls.get('homie_tourlocationtype').setVisible(false)
-    // Xrm.Page.data.entity.attributes.get('homie_tourlocationtype').setValue(false)
     return hideForm()
   }
 }
 
-var updateReferralFieldsWithContactInfo = () => {
+let updateReferralFieldsWithContactInfo = () => {
   // hideAddress2Composites()
-  var contact = Xrm.Page.data.entity.attributes.get("homie_existingcontact").getValue()
+  let contact = Xrm.Page.data.entity.attributes.get("homie_existingcontact").getValue()
 
   if (contact){
     return getContactInfo(contact[0].id)
@@ -23,52 +20,52 @@ var updateReferralFieldsWithContactInfo = () => {
   }
 }
 
-var getContactInfo = async (contactid) => {
+let getContactInfo = async (contactid) => {
   // remove curly braces if present
   contactid = contactid.split('').filter((a) => {
     return (a != '{' && a != '}')
   }).join('')
 
-  var url = 'https://homie-sb.crm.dynamics.com/api/data/v9.0/contacts(' + contactid + ')?$select=firstname,lastname,mobilephone,emailaddress1,_originatingleadid_value'
-  var otherParams = {
+  let url = 'https://homie-sb.crm.dynamics.com/api/data/v9.0/contacts(' + contactid + ')?$select=firstname,lastname,mobilephone,emailaddress1,_originatingleadid_value'
+  let otherParams = {
     headers: getHeaders(),
     method: "GET"
   }
-  var res = await fetch(url, otherParams)
-  var data = await res.json()
+  let res = await fetch(url, otherParams)
+  let data = await res.json()
 
   // update input fields
-  updateContactRelatedField('firstname', data.firstname)
-  updateContactRelatedField('lastname', data.lastname)
-  updateContactRelatedField('mobilephone', data.mobilephone)
-  updateContactRelatedField('emailaddress1', data.emailaddress1)
+  setFieldValue('firstname', data.firstname)
+  setFieldValue('lastname', data.lastname)
+  setFieldValue('mobilephone', data.mobilephone)
+  setFieldValue('emailaddress1', data.emailaddress1)
 
   // update Topic with full name
-  var fullname = data.firstname + ' ' + data.lastname
-  updateContactRelatedField('subject', fullname)
+  let fullname = data.firstname + ' ' + data.lastname
+  setFieldValue('subject', fullname)
 
   return getMarket(data)
 }
 
-var getMarket = async (data) => {
+let getMarket = async (data) => {
   // remove curly braces if present
-  var leadid = data['_originatingleadid_value']
+  let leadid = data['_originatingleadid_value']
   leadid = leadid.split('').filter((a) => {
     return (a != '{' && a != '}')
   }).join('')
 
   // get market from contact's originating lead
-  var url = 'https://homie-sb.crm.dynamics.com/api/data/v9.0/leads(' + leadid + ')?$select=homie_market'
-  var otherParams = {
+  let url = 'https://homie-sb.crm.dynamics.com/api/data/v9.0/leads(' + leadid + ')?$select=homie_market'
+  let otherParams = {
     headers: getHeaders(),
     method: "GET"
   }
-  var res = await fetch(url, otherParams)
-  var data = await res.json()
-  return updateContactRelatedField('homie_market', data.homie_market)
+  let res = await fetch(url, otherParams)
+  let data = await res.json()
+  return setFieldValue('homie_market', data.homie_market)
 }
 
-var getHeaders = () => {
+let getHeaders = () => {
   return {
     "OData-MaxVersion": "4.0",
     "OData-Version": "4.0",
@@ -78,21 +75,21 @@ var getHeaders = () => {
   }
 }
 
-var updateContactRelatedField = (field, val) => {
+let setFieldValue = (field, val) => {
   Xrm.Page.data.entity.attributes.get(field).setValue(val)
 }
 
-var clearReferralContactFields = () => {
+let clearReferralContactFields = () => {
   // clear all fields
-  updateContactRelatedField('firstname','')
-  updateContactRelatedField('lastname','')
-  updateContactRelatedField('mobilephone','')
-  updateContactRelatedField('emailaddress1','')
-  updateContactRelatedField('homie_market','')
-  updateContactRelatedField('subject','')
+  setFieldValue('firstname','')
+  setFieldValue('lastname','')
+  setFieldValue('mobilephone','')
+  setFieldValue('emailaddress1','')
+  setFieldValue('homie_market','')
+  setFieldValue('subject','')
 }
 
-var hideAddress2Composites = () => {
+let hideAddress2Composites = () => {
   setTimeout(() => {
     try {
       Xrm.Page.ui.controls.get("address2_composite_compositionLinkControl_address2_line1").setVisible(false)
@@ -108,13 +105,13 @@ var hideAddress2Composites = () => {
   }, 100);
 }
 
-var updateSubject = () => {
+let updateSubject = () => {
   // update subject field aka "Topic"
-  var firstname = Xrm.Page.data.entity.attributes.get("firstname").getValue()
-  var lastname = Xrm.Page.data.entity.attributes.get("lastname").getValue()
+  let firstname = Xrm.Page.data.entity.attributes.get("firstname").getValue()
+  let lastname = Xrm.Page.data.entity.attributes.get("lastname").getValue()
 
   // only use fields with a value, otherwise use empty string
-  var fullname
+  let fullname
   if (firstname && lastname){
     fullname = firstname + ' ' + lastname
   } else if (firstname){
@@ -126,12 +123,12 @@ var updateSubject = () => {
   }
 
   fullname = fullname.trim()
-  return updateContactRelatedField('subject', fullname)
+  return setFieldValue('subject', fullname)
 }
 
-var showHideLocationFields = () => {
-  var referralType = Xrm.Page.data.entity.attributes.get('homie_verticalselection').getSelectedOption()
-  var locationType = Xrm.Page.data.entity.attributes.get('homie_tourlocationtype').getValue()
+let showHideLocationFields = () => {
+  let referralType = Xrm.Page.data.entity.attributes.get('homie_verticalselection').getSelectedOption()
+  let locationType = Xrm.Page.data.entity.attributes.get('homie_tourlocationtype').getValue()
   
   if (!referralType){
     Xrm.Page.ui.controls.get('address2_line1').setVisible(false)
@@ -164,8 +161,8 @@ var showHideLocationFields = () => {
   // return hideAddress2Composites()
 }
 
-var showHideLocationType = () => {
-  var referralType = Xrm.Page.data.entity.attributes.get('homie_verticalselection').getSelectedOption()
+let showHideLocationType = () => {
+  let referralType = Xrm.Page.data.entity.attributes.get('homie_verticalselection').getSelectedOption()
   
   if (referralType && referralType.text == 'Buyer'){
     Xrm.Page.ui.controls.get('homie_tourlocationtype').setVisible(true)
@@ -177,7 +174,7 @@ var showHideLocationType = () => {
 
 }
 
-var showForm = () => {
+let showForm = () => {
   Xrm.Page.ui.controls.get('homie_isthisahomieclient').setVisible(true)
   Xrm.Page.ui.controls.get('leadsourcecode').setVisible(true)
   
@@ -188,7 +185,7 @@ var showForm = () => {
   Xrm.Page.ui.controls.get('description').setVisible(true)
 }
 
-var hideForm = () => {
+let hideForm = () => {
   Xrm.Page.ui.controls.get('homie_isthisahomieclient').setVisible(false)
   Xrm.Page.ui.controls.get('leadsourcecode').setVisible(false)
   
@@ -199,9 +196,9 @@ var hideForm = () => {
   Xrm.Page.ui.controls.get('description').setVisible(false)
 }
 
-var showLockNameFields = () => {
-  var referralType = Xrm.Page.data.entity.attributes.get('homie_verticalselection').getSelectedOption()
-  var isHomieClient = Xrm.Page.data.entity.attributes.get('homie_isthisahomieclient').getValue()
+let showLockNameFields = () => {
+  let referralType = Xrm.Page.data.entity.attributes.get('homie_verticalselection').getSelectedOption()
+  let isHomieClient = Xrm.Page.data.entity.attributes.get('homie_isthisahomieclient').getValue()
   
   if (referralType){
     if (isHomieClient === true){
@@ -228,3 +225,4 @@ var showLockNameFields = () => {
     Xrm.Page.ui.controls.get('subject').setVisible(false)
   }
 }
+
