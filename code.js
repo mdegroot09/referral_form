@@ -61,7 +61,7 @@ let getMarket = async (data) => {
     method: "GET"
   }
   let res = await fetch(url, otherParams)
-  let data = await res.json()
+  data = await res.json()
   return setFieldValue('homie_market', data.homie_market)
 }
 
@@ -226,3 +226,8 @@ let showLockNameFields = () => {
   }
 }
 
+let updatePipelinePhase = (rowVal, userlcid) => {
+  let row = JSON.parse(rowVal)
+  console.log(row.stepname)
+  // console.log(userlcid)
+}
